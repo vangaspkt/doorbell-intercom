@@ -21,15 +21,11 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Thiết lập Gradle
-      uses: gradle/actions/setup-gradle@v3
-      with:
-        gradle-version: '8.5'
+    - name: Cấp quyền thực thi cho Gradle Wrapper
+      run: chmod +x ./gradlew
 
-    - name: Chấp nhận bản quyền Android & Build APK
-      run: |
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-        gradle assembleDebug --stacktrace
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug --no-daemon --stacktrace
 
     - name: Lưu trữ file APK cài đặt
       uses: actions/upload-artifact@v4
