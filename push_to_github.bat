@@ -1,26 +1,56 @@
 @echo off
 chcp 65001 >nul
-echo ========================================================
-echo   ĐẨY DỰ ÁN LÊN GITHUB: vangaspkt/doorbell-intercom
-echo ========================================================
-echo.
+title Đẩy Doorbell Intercom lên GitHub
 cd /d "%~dp0"
 
-echo Đang kết nối tới GitHub...
-"C:\Users\Admin\mingit\cmd\git.exe" push -u origin main
+echo ========================================================
+echo       ĐẨY MÃ NGUỒN LÊN GITHUB ĐỂ TỰ ĐỘNG BUILD APK
+echo ========================================================
+echo.
+
+REM Kiểm tra commit
+"C:\Users\Admin\mingit\cmd\git.exe" add .
+"C:\Users\Admin\mingit\cmd\git.exe" commit -m "Auto commit files" >nul 2>&1
+"C:\Users\Admin\mingit\cmd\git.exe" branch -M main
+
+echo [1] Đẩy lên: https://github.com/vangaspkt/doorbell-intercom.git
+echo [2] Nhập URL khác
+echo.
+set /p CHOICE="Chọn [1, 2, hoặc 3] (Mặc định là 1): "
+
+if "%CHOICE%"=="2" (
+    set TARGET_URL=https://github.com/vanngaspkt-dotcom/doorbell-intercom.git
+) else if "%CHOICE%"=="3" (
+    set /p TARGET_URL="Nhập link repository: "
+) else (
+    set TARGET_URL=https://github.com/vangaspkt/doorbell-intercom.git
+)
+
+echo.
+echo Đang đặt remote: %TARGET_URL%
+"C:\Users\Admin\mingit\cmd\git.exe" remote remove origin 2>nul
+"C:\Users\Admin\mingit\cmd\git.exe" remote add origin %TARGET_URL%
+
+echo.
+echo Đang đẩy dữ liệu lên GitHub...
+"C:\Users\Admin\mingit\cmd\git.exe" push -u origin main --force
 
 echo.
 if %ERRORLEVEL% equ 0 (
     echo ========================================================
-    echo   THÀNH CÔNG! Mã nguồn đã được đưa lên GitHub.
+    echo   [THÀNH CÔNG!] Mã nguồn đã được tải lên GitHub.
     echo.
-    echo   Luồng build APK tự động đang chạy tại:
-    echo   https://github.com/vangaspkt/doorbell-intercom/actions
-    echo.
-    echo   Vui lòng đợi 2-3 phút rồi vào link trên tải file APK về!
+    echo   Máy chủ GitHub đang bắt đầu build file APK cho bạn...
+    echo   Vào mục 'Actions' trên GitHub để xem tiến độ và tải APK:
+    echo   %TARGET_URL:~0,-4%/actions
     echo ========================================================
 ) else (
-    echo [CHÚ Ý] Nếu có cửa sổ đăng nhập GitHub hiện lên, vui lòng chọn "Sign in with your browser" để hoàn tất.
+    echo ========================================================
+    echo   [THẤT BẠI] Không thể đẩy lên GitHub.
+    echo   Lý do thường gặp:
+    echo   1. Bạn chưa tạo repository này trên GitHub.
+    echo   2. Bạn chưa đăng nhập tài khoản sở hữu repository này.
+    echo ========================================================
 )
 echo.
 pause
