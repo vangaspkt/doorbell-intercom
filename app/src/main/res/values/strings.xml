@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Chuông Cửa ESP32</string>
+    <string name="server_ip">Địa chỉ IP Server:</string>
+    <string name="server_port">Cổng (Port):</string>
+    <string name="server_password">Mật khẩu Web:</string>
+    <string name="btn_save_connect">Lưu &amp; Kết Nối</string>
+    <string name="incoming_call_title">Có Người Bấm Chuông!</string>
+    <string name="btn_answer">Bắt Máy (Xem &amp; Nói)</string>
+    <string name="btn_hangup">Cúp Máy</string>
+    <string name="btn_light">Bật Đèn</string>
+    <string name="btn_buzzer">Bấm Còi</string>
+</resources>
+

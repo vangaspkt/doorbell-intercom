@@ -1,0 +1,10 @@
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green_call">#4CAF50</color>
+    <color name="red_hangup">#F44336</color>
+    <color name="gray_dark">#212121</color>
+    <color name="gray_light">#EEEEEE</color>
+    <color name="blue_btn">#1976D2</color>
+</resources>
+

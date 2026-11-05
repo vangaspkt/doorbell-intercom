@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center_vertical"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cấu hình Chuông Cửa ESP32"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Địa chỉ IP Máy Chủ (LAN hoặc Cloud):"
+        android:textSize="14sp"
+        android:textColor="@color/gray_dark" />
+
+    <EditText
+        android:id="@+id/etServerIp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ví dụ: 192.168.1.100"
+        android:text="192.168.1.100"
+        android:inputType="textUri"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cổng Server (Port):"
+        android:textSize="14sp"
+        android:textColor="@color/gray_dark" />
+
+    <EditText
+        android:id="@+id/etServerPort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="3000"
+        android:text="3000"
+        android:inputType="number"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mật khẩu Web (WEB_PASSWORD):"
+        android:textSize="14sp"
+        android:textColor="@color/gray_dark" />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="1234"
+        android:text="1234"
+        android:inputType="textPassword"
+        android:layout_marginBottom="24dp" />
+
+    <Button
+        android:id="@+id/btnStartService"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="Khởi Động Dịch Vụ Chờ Chuông"
+        android:backgroundTint="@color/blue_btn"
+        android:textColor="@color/white"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btnTestCall"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Thử Nghiệm Màn Hình Cuộc Gọi"
+        android:backgroundTint="@color/gray_dark"
+        android:textColor="@color/white" />
+
+</LinearLayout>
+
