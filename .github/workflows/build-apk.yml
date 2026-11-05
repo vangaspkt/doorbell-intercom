@@ -25,7 +25,14 @@ jobs:
       run: chmod +x ./gradlew
 
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --stacktrace
+      run: |
+        ./gradlew assembleDebug --stacktrace --console=plain > build.log 2>&1 || {
+          echo "### ❌ Chi tiết lỗi biên dịch:" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          tail -n 60 build.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          exit 1
+        }
 
     - name: Lưu trữ file APK cài đặt
       if: success()
@@ -34,9 +41,9 @@ jobs:
         name: ChuongCua-ESP32-APK
         path: app/build/outputs/apk/debug/app-debug.apk
 
-    - name: Thu thập nhật ký lỗi nếu build thất bại
+    - name: Tải file log lỗi
       if: failure()
       uses: actions/upload-artifact@v4
       with:
-        name: Build-Error-Log
-        path: app/build/reports/
+        name: build-log
+        path: build.log

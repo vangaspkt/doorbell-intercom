@@ -14,7 +14,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import okio.ByteString.Companion.toByteString
+import okio.ByteString
 import org.json.JSONObject
 
 class IncomingCallActivity : AppCompatActivity() {
@@ -35,9 +35,7 @@ class IncomingCallActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 1. CẤU HÌNH BẬT SÁNG MÀN HÌNH & HIỂN THỊ TRÊN MÀN HÌNH KHÓA
         configureWakeScreen()
-
         setContentView(R.layout.activity_incoming_call)
 
         imgCamera = findViewById(R.id.imgCamera)
@@ -47,16 +45,13 @@ class IncomingCallActivity : AppCompatActivity() {
         btnLight = findViewById(R.id.btnLight)
         btnBuzzer = findViewById(R.id.btnBuzzer)
 
-        // Tự động tắt màn hình sau 45 giây nếu không có ai trả lời
         resetAutoCloseTimer()
 
-        // Khởi tạo Audio Manager
         audioManager = AudioStreamManager { pcmBytes ->
-            // Gửi âm thanh từ micro điện thoại về Server -> ESP32
-            IntercomService.activeWebSocket?.send(pcmBytes.toByteString())
+            val byteString = ByteString.of(pcmBytes, 0, pcmBytes.size)
+            IntercomService.activeWebSocket?.send(byteString)
         }
 
-        // Lắng nghe hình ảnh từ camera ESP32
         IntercomService.frameListener = { jpegBytes ->
             val bmp = BitmapFactory.decodeByteArray(jpegBytes, 0, jpegBytes.size)
             if (bmp != null) {
@@ -67,12 +62,10 @@ class IncomingCallActivity : AppCompatActivity() {
             }
         }
 
-        // Lắng nghe tiếng từ micro ESP32 phát ra loa ngoài điện thoại
         IntercomService.audioListener = { pcmBytes ->
             audioManager?.playAudio(pcmBytes, 0, pcmBytes.size)
         }
 
-        // 2. NÚT GIỮ ĐỂ NÓI (Push To Talk)
         btnTalk.setOnTouchListener { _, event ->
             resetAutoCloseTimer()
             when (event.action) {
@@ -92,12 +85,10 @@ class IncomingCallActivity : AppCompatActivity() {
             }
         }
 
-        // 3. NÚT CÚP MÁY (Đóng app, tắt màn hình)
         btnHangup.setOnClickListener {
             finish()
         }
 
-        // 4. NÚT BẬT/TẮT ĐÈN
         btnLight.setOnClickListener {
             resetAutoCloseTimer()
             isLightOn = !isLightOn
@@ -109,7 +100,6 @@ class IncomingCallActivity : AppCompatActivity() {
             IntercomService.activeWebSocket?.send(msg.toString())
         }
 
-        // 5. NÚT BẤM CÒI
         btnBuzzer.setOnClickListener {
             resetAutoCloseTimer()
             val msg = JSONObject().apply {
@@ -140,7 +130,7 @@ class IncomingCallActivity : AppCompatActivity() {
 
     private fun resetAutoCloseTimer() {
         autoCloseHandler.removeCallbacks(autoCloseRunnable)
-        autoCloseHandler.postDelayed(autoCloseRunnable, 45000L) // 45 giây
+        autoCloseHandler.postDelayed(autoCloseRunnable, 45000L)
     }
 
     override fun onDestroy() {
@@ -152,4 +142,3 @@ class IncomingCallActivity : AppCompatActivity() {
         audioManager = null
     }
 }
-
